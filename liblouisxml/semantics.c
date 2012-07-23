@@ -1296,6 +1296,10 @@ new_style (xmlChar * name)
   style = malloc (sizeof (StyleType));
   memset (style, 0, sizeof (StyleType));
   hashInsert (semanticTable, key, styleEntry, 0, NULL, style);
+  style->format = inherit; /* inherit parent format by default */
+  style->right_margin = -100; /* inherit from parent format */
+  style->left_margin = -100; /* inherit from parent format */
+  style->first_line_indent = -100; /* inherit from parent format */
   return style;
 }
 

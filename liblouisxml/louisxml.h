@@ -36,6 +36,7 @@
 #include "sem_enum.h"
 typedef enum
 {
+  inherit = -100, /* only if parent format is leftJustified, rightJustified or centered */
   leftJustified = 0,
   rightJustified = 1,
   centered = 2,
@@ -126,6 +127,10 @@ typedef struct
   StyleType *style;
   StyleStatus status;
   BrlPageNumFormat curBrlNumFormat;
+  StyleFormat curStyleFormat;
+  int curLeftMargin;
+  int curRightMargin;
+  int curFirstLineIndent;
 } StyleRecord;
 
 typedef struct
@@ -234,6 +239,10 @@ typedef struct
   StyleRecord style_stack[STACKSIZE];
   int style_top;
   BrlPageNumFormat brl_page_num_format;
+  StyleFormat style_format;
+  int left_margin;
+  int right_margin;
+  int first_line_indent;
   char xml_header[BUFSIZE];
   widechar text_buffer[2 * BUFSIZE];
   widechar translated_buffer[2 * BUFSIZE];

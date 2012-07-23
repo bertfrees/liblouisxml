@@ -830,6 +830,8 @@ compileConfig (FileInfo * nested)
           NULL
 	    };
 	    static const char *formats[] = {
+	      "inherit",
+	      "-100",
 	      "leftJustified",
 	      "0",
 	      "rightJustified",
