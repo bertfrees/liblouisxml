@@ -2075,6 +2075,7 @@ doLeftJustify (void)
       int wordTooLong = 0;
       int breakAt = 0;
       int leadingBlanks = 0;
+      int trailingBlanks = 0;
       availableCells = startLine ();
       if (styleSpec->status == startBody)
 	{
@@ -2083,9 +2084,11 @@ doLeftJustify (void)
 	}
       else
 	leadingBlanks = style->left_margin;
+  	  trailingBlanks = style->right_margin;
       if (!insertCharacters (blanks, leadingBlanks))
 	return 0;
       availableCells -= leadingBlanks;
+      availableCells -= trailingBlanks;
       if ((charactersWritten + availableCells) >= translatedLength)
 	cellsToWrite = translatedLength - charactersWritten;
       else
@@ -2331,20 +2334,23 @@ doCenterRight (void)
   int charactersWritten = 0;
   int cellsToWrite = 0;
   int availableCells = 0;
-  int margin = 0;
-  if (style->format == centered)
-	{
-	  margin = style->centered_margin;
-	  if (margin < 0)
-		margin = 0;
-	}
   int k;
   while (charactersWritten < translatedLength)
     {
       int wordTooLong = 0;
+      int leadingBlanks = 0;
+      int trailingBlanks = 0;
       availableCells = startLine ();
-      if (style->format == centered)
-        availableCells -= (2*margin);
+      if (styleSpec->status == startBody)
+	{
+	  leadingBlanks = style->left_margin + style->first_line_indent;
+	  styleSpec->status = resumeBody;
+	}
+      else
+	leadingBlanks = style->left_margin;
+      trailingBlanks = style->right_margin;
+      availableCells -= leadingBlanks;
+      availableCells -= trailingBlanks;
       if ((translatedLength - charactersWritten) < availableCells)
 	{
 	  k = (availableCells - (translatedLength - charactersWritten));
@@ -2352,7 +2358,7 @@ doCenterRight (void)
 	    k /= 2;
 	  else if (style->format != rightJustified)
 	    return 0;
-	  if (!insertCharacters (blanks, margin + k))
+	  if (!insertCharacters (blanks, leadingBlanks + k))
 	    return 0;
 	  if (!insertWidechars (&translatedBuffer[charactersWritten],
 				translatedLength - charactersWritten))
@@ -2385,7 +2391,7 @@ doCenterRight (void)
 	}
 	  else
         k = 0;
-	  if (!insertCharacters (blanks, margin + k))
+	  if (!insertCharacters (blanks, leadingBlanks + k))
 	    return 0;
       if (!insertWidechars
 	  (&translatedBuffer[charactersWritten], cellsToWrite))

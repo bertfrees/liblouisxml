@@ -62,7 +62,7 @@ typedef struct
   int lines_before;
   int lines_after;
   int left_margin;
-  int centered_margin;
+  int right_margin;
   int keep_with_next;
   int dont_split;
   int orphan_control;

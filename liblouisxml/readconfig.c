@@ -819,7 +819,7 @@ compileConfig (FileInfo * nested)
 	      "11",
 		  "braillePageNumberFormat",
 		  "12",
-          "centeredMargin",
+          "rightMargin",
           "13",
           "keepWithNext",
           "14",
@@ -919,7 +919,7 @@ compileConfig (FileInfo * nested)
 		      style->brlNumFormat = k;
 		    break;
           case 13:
-            style->centered_margin = atoi (nested->value);
+            style->right_margin = atoi (nested->value);
             break;
           case 14:
             if ((k = checkValues (nested, yesNo)) != NOTFOUND)
